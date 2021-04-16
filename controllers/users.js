@@ -1,16 +1,17 @@
 const { response } = require('express')
+const bcryptjs = require('bcryptjs')
 
-
+const User = require('../models/user');
 
 
 const usersGet = (req, res = response) => {
 
-    const {q, nombre = 'No name', apikey, page = '1', limit} = req.query;
+    const {q, name = 'No name', apikey, page = '1', limit} = req.query;
 
     res.json({
         msg: 'get API - usersGet Controller',
         q,
-        nombre,
+        name,
         apikey,
         page,
         limit
@@ -21,29 +22,40 @@ const usersPut = (req, res = response) => {
 
     const { id } = req.params;
     res.json({
-        msg: 'get API - usersPut Controller',        
+        msg: 'put API - usersPut Controller',        
         id
     })
 }
 
-const usersPost = (req, res = response) => {
-    const { nombre, edad } = req.body;
+const usersPost = async(req, res = response) => {
+
+    
+
+    const { name, email, password, role } = req.body;
+    const user = new User({name, email, password, role});
+
+
+    // Encript PW
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync(password, salt);
+
+    // Save DB
+    await user.save();
+
     res.json({
-        msg: 'get API - usersPost Controller',
-        nombre,
-        edad
+        user
     })
 }
 
 const usersDelete = (req, res = response) => {
     res.json({
-        msg: 'get API - usersDelete Controller',
+        msg: 'delete API - usersDelete Controller',
     })
 }
 
 const usersPatch = (req, res = response) => {
     res.json({
-        msg: 'get API - usersPatch Controller',
+        msg: 'patch API - usersPatch Controller',
     })
 }
 
