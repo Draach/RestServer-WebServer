@@ -36,8 +36,8 @@ const usersPost = async(req, res = response) => {
 
 
     // Encript PW
-    const salt = bcryptjs.genSaltSync();
-    user.password = bcryptjs.hashSync(password, salt);
+    const salt = bcryptjs.genSaltSync();                        // genSaltySinc generates a salt, how many rounds used to encrypt, default 10
+    user.password = bcryptjs.hashSync(password, salt);          // hashSync generates a hash for the given string, requires the string and a salt
 
     // Save DB
     await user.save();
