@@ -10,7 +10,7 @@ class Server {
         this.usersPath = "/api/users";
         
         // Database connection
-        this.dbConnect();
+        
 
         // Middlewares
         this.middlewares();
@@ -18,7 +18,7 @@ class Server {
         // App routes
         this.routes();
     }
-
+    dbConnect();
     async dbConnect() {
         await dbConnection();
     }
