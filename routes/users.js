@@ -33,6 +33,8 @@ router.put('/:id',[
 ] ,usersPut);
 
 router.post('/', [
+    JWTValidate,
+    adminValidate,
     check('name', 'Name is mandatory.').not().isEmpty(),
     check('password', 'Password must have at least 6 characters.').isLength({ min: 6}),
     check('email', 'email must have a valid email.').isEmail(),
