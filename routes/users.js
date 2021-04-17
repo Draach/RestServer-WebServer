@@ -2,7 +2,17 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 
-const { fieldValidate } = require('../middlewares/field-validate');
+// const { fieldValidate } = require('../middlewares/field-validate');
+// const { JWTValidate } = require('../middlewares/jwt-validate');
+// const { adminValidate, roleValidate } = require('../middlewares/role-validate');
+const {
+    fieldValidate,
+    JWTValidate,
+    adminValidate,
+    roleValidate
+} = require('../middlewares');   // Imports from middlewares/index.
+
+
 const { isValidRole, emailExists, userIDExists } = require('../helpers/db-validators');
 
 const { usersGet,
@@ -33,6 +43,9 @@ router.post('/', [
 ], usersPost); // if 3 params, the second is the middleware/array of middlewares and the third is the controller
 
 router.delete('/:id', [
+    JWTValidate,
+    adminValidate,
+    //roleValidate('ADMIN_ROLE', 'VENTAS_ROLE'),
     check('id', "Not a valid ID.").isMongoId(),
     check('id').custom( userIDExists ),
     fieldValidate
