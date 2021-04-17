@@ -13,10 +13,12 @@ Completely functional backend + frontend
 
 # Installation
 Run ```npm install``` to reconstruct node_modules folder.
+
 Create your ```.env``` file and define your ```enviroment variables```
-+PORT=port here
-+MONGODB_CNN=database url here
-+SECRETORPRIVATEKEY=private key for JWT authentification here
+
++ PORT=port here
++ MONGODB_CNN=database url here
++ SECRETORPRIVATEKEY=private key for JWT authentification here
 
 # Usage 
 Run ```npm start``` to start the server.
