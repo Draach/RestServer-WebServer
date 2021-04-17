@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const cors = require('cors');
 
 
 const { fieldValidate } = require('../middlewares/field-validate');
@@ -14,21 +13,6 @@ const { usersGet,
 
 const router = Router();
 
-//
-var whitelist = ['http://localhost:8080', 'https://restserver-nodejs-jm.herokuapp.com']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-
-
-//
-router.get('/', cors(corsOptions) ,usersGet);
 
 router.put('/:id',[
     check('id', "Not a valid ID.").isMongoId(),
