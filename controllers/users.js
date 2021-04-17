@@ -2,29 +2,49 @@ const { response } = require('express')
 const bcryptjs = require('bcryptjs')
 
 const User = require('../models/user');
+const user = require('../models/user');
 
 
-const usersGet = (req, res = response) => {
+const usersGet = async(req, res = response) => {
 
-    const {q, name = 'No name', apikey, page = '1', limit} = req.query;
+    // const {q, name = 'No name', apikey, page = '1', limit} = req.query;
+    const { limit = 5, from = 0 } = req.query;
+    const query = {status: true};
+
+    /**
+    const users = await User.find(query)
+    .skip(Number(from))
+    .limit(Number(limit));
+
+    const total = await User.countDocuments(query);
+    */
+    const [ total, users] = await Promise.all([    // Promises array, array destruct.
+        User.countDocuments(query),
+        User.find(query)
+            .skip(Number(from))
+            .limit(Number(limit))
+    ]);
 
     res.json({
-        msg: 'get API - usersGet Controller',
-        q,
-        name,
-        apikey,
-        page,
-        limit
+        total,
+        users
     })
 }
 
-const usersPut = (req, res = response) => {
+const usersPut = async(req, res = response) => {
 
     const { id } = req.params;
-    res.json({
-        msg: 'put API - usersPut Controller',        
-        id
-    })
+    const { _id, password, google, email, ...resto } = req.body;
+
+    if ( password ) {
+        const salt = bcryptjs.genSaltSync();                 
+        resto.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate( id, resto );
+
+    res.json(user)
+
 }
 
 const usersPost = async(req, res = response) => {
@@ -47,10 +67,16 @@ const usersPost = async(req, res = response) => {
     })
 }
 
-const usersDelete = (req, res = response) => {
-    res.json({
-        msg: 'delete API - usersDelete Controller',
-    })
+const usersDelete = async(req, res = response) => {
+
+    const { id } = req.params;
+
+    // Physical delete
+    // const user = await User.findByIdAndDelete( id );
+
+    const user = await User.findByIdAndUpdate(id, {status: false});
+
+    res.json(user)
 }
 
 const usersPatch = (req, res = response) => {

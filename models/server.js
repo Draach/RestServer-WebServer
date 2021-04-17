@@ -31,14 +31,14 @@ class Server {
         // body read & parse
         this.app.use( express.json() );
 
-        // public directory
+        // public directory as default path "/"
         this.app.use( express.static('public'));
 
     }
 
     routes() {
 
-        this.app.use(this.usersPath, require('../routes/users'));
+        this.app.use(this.usersPath, require('../routes/users'));   // path definition 
 
     }
 

@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { fieldValidate } = require('../middlewares/field-validate');
-const { isValidRole, emailExists } = require('../helpers/db-validators');
+const { isValidRole, emailExists, userIDExists } = require('../helpers/db-validators');
 
 const { usersGet,
         usersPut,
@@ -15,19 +15,28 @@ const router = Router();
 
 router.get('/', usersGet);
 
-router.put('/:id', usersPut);
+router.put('/:id',[
+    check('id', "Not a valid ID.").isMongoId(),
+    check('id').custom( userIDExists ),
+    check('role').custom( isValidRole ),
+    fieldValidate                                                   // Continue only if no errors
+] ,usersPut);
 
 router.post('/', [
     check('name', 'Name is mandatory.').not().isEmpty(),
     check('password', 'Password must have at least 6 characters.').isLength({ min: 6}),
-    check('email', 'Email is not a valid email.').isEmail(),
+    check('email', 'email must have a valid email.').isEmail(),
     check('email').custom( emailExists ),
     // check('role', 'Role is not a valid role.').isIn(['ADMIN_ROLE', 'USER_ROLE']),
     check('role').custom( isValidRole ),
-    fieldValidate
+    fieldValidate                                                   // Continue only if no errors
 ], usersPost); // if 3 params, the second is the middleware/array of middlewares and the third is the controller
 
-router.delete('/', usersDelete); // if 2 params, the second is the controller
+router.delete('/:id', [
+    check('id', "Not a valid ID.").isMongoId(),
+    check('id').custom( userIDExists ),
+    fieldValidate
+], usersDelete); // if 2 params, the second is the controller
 
 router.patch('/', usersPatch);
 
