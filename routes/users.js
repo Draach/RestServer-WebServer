@@ -13,6 +13,7 @@ const { usersGet,
 
 const router = Router();
 
+router.get('/', usersGet);
 
 router.put('/:id',[
     check('id', "Not a valid ID.").isMongoId(),
