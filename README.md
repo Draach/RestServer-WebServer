@@ -13,6 +13,7 @@ Completely functional backend + frontend
 
 # Installation
 Run ```npm install``` to reconstruct node_modules folder.
+
 Create your ```.env``` file and define your ```enviroment variables```
 + PORT=port here
 + MONGODB_CNN=database url here
