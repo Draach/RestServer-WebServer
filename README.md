@@ -9,7 +9,7 @@ Completely functional backend + frontend
 + JWT Authentification
 + MongoAtlas DB Usage
 + Lots of validations for optimal usage
-+ GET - PUT - POST - DELETE - PATCH - LOGIN (To be documented)
++ [GET - PUT - POST - DELETE - PATCH - LOGIN](#documentation)
 
 # Installation
 Run ```npm install``` to reconstruct node_modules folder.
@@ -24,4 +24,4 @@ Create your ```.env``` file and define your ```enviroment variables```
 Run ```npm start``` to start the server.
 
 # Documentation
-Under Construction.
+https://documenter.getpostman.com/view/15252671/TzJsexpB
