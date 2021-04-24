@@ -1,0 +1,3 @@
+# Note
+
+Folder for uploads.
