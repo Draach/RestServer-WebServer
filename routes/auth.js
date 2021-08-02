@@ -2,11 +2,15 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 
-const { login, googleSignIn } = require('../controllers/auth');
+const { login, googleSignIn, tokenValidation } = require('../controllers/auth');
 const { fieldValidate } = require('../middlewares/field-validate');
+const { JWTValidate } = require('../middlewares/jwt-validate');
 
 
 const router = Router();
+
+
+router.get('/', JWTValidate, tokenValidation);
 
 // step 3 - create routes.
 router.post('/login', [
